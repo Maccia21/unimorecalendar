@@ -3,53 +3,68 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Aggiungi l'orario delle lezioni UNIMORE al tuo calendario (Google, Apple, Outlook), filtrando solo i corsi che segui.">
-  <title>corso - UNIMORE Calendar</title>
-
-  <!-- Bootstrap -->
+  <meta name="theme-color" content="#4f46e5">
+  <title>Scegli gli insegnamenti · UNIMORE Calendar</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="/calendar.png" type="image/png">
+  <link rel="apple-touch-icon" href="/calendar.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="/css/bootstrap.css" rel="stylesheet">
   <link href="/css/template.css" rel="stylesheet">
-  <link rel="shortcut icon" href="/calendar.png" type="image/x-icon" />
-
-  <!-- Custom styles -->
   <link href="/css/course.css" rel="stylesheet">
+  <link href="/css/theme.css" rel="stylesheet">
+  <script src="/scripts/theme.js"></script>
   <script src="/scripts/catalog.js" defer></script>
   <script src="/scripts/course.js" defer></script>
 </head>
 
 <body class="">
 <div class="container" id="main-container">
-    <div class="mt-5">
-        <h1><a href="/"><img src="/calendar.png" alt="UNIMORE Calendar" style="width: 40px; height: 40px; margin-right: 10px; margin-top: 3px; vertical-align: top;">UNIMORE Calendar</a></h1>
-        <h6>Seleziona solo i corsi che intendi inserire nel tuo calendario</h6>
-        <p class="mb-0 fw-semibold" id="course-title"></p>
+  <header class="mt-5 mb-4">
+    <div class="topbar">
+      <h1 class="brand"><a href="/"><img src="/favicon.svg" alt=""> UNIMORE <span class="accent">Calendar</span></a></h1>
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Cambia tema">🌙</button>
     </div>
-    <div class="mt-3" id="box">
-        <div id="course-error" class="d-none"><h5 style="color: #dc3545;">Errore! L'indirizzo non è valido...</h5><a href="/">Torna alla home</a></div>
-        <div id="course-content" class="d-none">
-            <button class="btn btn-secondary" id="select_or_deselect_all" type="button">Deseleziona tutti</button>
-            <div class="container">
-                <form id="select_lectures" action="/link" method="get">
-                    <div class="row"><table><tbody id="lectures"></tbody></table></div>
-                    <div class="mb-3 mt-2">
-                        <label for="alert" class="ms-0">Promemoria prima di ogni lezione (minuti, 0 = nessuno)</label>
-                        <input type="number" class="form-control" id="alert" min="0" max="1440" value="0" style="max-width: 10rem;">
-                    </div>
-                    <input type="submit" class="btn btn-primary" value="Ottieni Calendario"/>
-                </form>
-            </div>
+    <p class="subtitle">Seleziona solo gli insegnamenti che vuoi nel tuo calendario.</p>
+    <span class="pill" id="course-title"></span>
+  </header>
+  <main id="box">
+    <div id="course-error" class="d-none"><h5 style="color: var(--danger);">Errore! L&#39;indirizzo non è valido...</h5><a href="/">← Torna alla home</a></div>
+    <div id="course-content" class="d-none">
+      <div class="toolbar">
+        <span class="counter" id="counter"></span>
+        <button class="btn btn-secondary" id="select_or_deselect_all" type="button">Deseleziona tutti</button>
+      </div>
+      <form id="select_lectures" action="/link" method="get">
+        <div class="lecture-list" id="lectures"></div>
+        <div class="reminder">
+          <label for="alert">⏰ Promemoria prima di ogni lezione</label>
+          <select id="alert" class="form-select">
+            <option value="0">Nessuno</option>
+            <option value="10">10 minuti prima</option>
+            <option value="15">15 minuti prima</option>
+            <option value="30">30 minuti prima</option>
+            <option value="60">1 ora prima</option>
+          </select>
         </div>
+        <input type="submit" class="btn btn-primary btn-wide" value="Ottieni il calendario →"/>
+      </form>
+      <p class="mt-3 mb-0"><a href="/">← Cambia corso</a></p>
     </div>
+  </main>
 </div>
-  <!-- FOOTER -->
-  <figure class="text-center mt-5 px-3">
-    <figcaption class="blockquote-footer">
-      Sito indipendente, <strong>non affiliato né approvato dall&#39;Università degli Studi di Modena e Reggio Emilia (UNIMORE)</strong>.<br>
-      Gli orari provengono dal portale pubblico <a href="https://www.aule.unimore.it/PortaleStudentiUnimore/" target="_blank" rel="noopener">aule.unimore.it</a>: in caso di dubbi fa fede il sito ufficiale.<br>
-      Basato su <a href="https://github.com/FrancescoBonzi/UniboCalendar" target="_blank" rel="noopener">UniboCalendar</a> · Licenza AGPL-3.0 · <a href="https://github.com/" id="source-link" target="_blank" rel="noopener">Codice sorgente</a>
-    </figcaption>
-  </figure>
+
+<footer class="footer-note text-center">
+  <p class="blockquote-footer mb-0">
+    Sito indipendente, <strong>non affiliato né approvato dall&#39;Università degli Studi di Modena e Reggio Emilia (UNIMORE)</strong>.<br>
+    Gli orari provengono dal portale pubblico <a href="https://www.aule.unimore.it/PortaleStudentiUnimore/" target="_blank" rel="noopener">aule.unimore.it</a>: in caso di dubbi fa fede il sito ufficiale.<br>
+    Basato su <a href="https://github.com/FrancescoBonzi/UniboCalendar" target="_blank" rel="noopener">UniboCalendar</a> · Licenza AGPL-3.0 · <a href="https://github.com/" id="source-link" target="_blank" rel="noopener">Codice sorgente</a>
+  </p>
+</footer>
 </body>
 
 </html>

@@ -3,65 +3,81 @@
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="description" content="Aggiungi l'orario delle lezioni UNIMORE al tuo calendario (Google, Apple, Outlook), filtrando solo i corsi che segui.">
-  <title>UNIMORE Calendar</title>
-
-  <!-- Bootstrap -->
+  <meta name="theme-color" content="#4f46e5">
+  <title>UNIMORE Calendar · orario lezioni nel tuo calendario</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="alternate icon" href="/calendar.png" type="image/png">
+  <link rel="apple-touch-icon" href="/calendar.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="/css/bootstrap.css" rel="stylesheet">
   <link href="/css/template.css" rel="stylesheet">
-  <link rel="shortcut icon" href="/calendar.png" type="image/x-icon" />
-
-  <!-- Custom styles -->
   <link href="/css/home.css" rel="stylesheet">
+  <link href="/css/theme.css" rel="stylesheet">
+  <script src="/scripts/theme.js"></script>
   <script src="/scripts/catalog.js" defer></script>
   <script src="/scripts/home.js" defer></script>
 </head>
 
 <body class="">
-  <div class="container" id="main-container">
-  <div class="mt-5">
-    <h1><a href="/"><img src="/calendar.png" alt="UNIMORE Calendar" style="width: 40px; height: 40px; margin-right: 10px; margin-top: 3px; vertical-align: top;">UNIMORE Calendar</a></h1>
-    <h6>Vuoi inserire i tuoi appuntamenti universitari nel tuo calendario (iCloud, Google, ecc)?<br>Riempi i campi qui sotto per cominciare</h6>
-  </div>
-  <div class="mt-3" id="box">
-    <form id="form_calendar" class="form-group" action="/corso" method="get">
-      <div class="mb-3">
-        <select id="areas" class="form-select" name="s" aria-label="Scuola">
-          <option value="">--- Seleziona Scuola ---</option>
+<div class="container" id="main-container">
+  <header class="mt-5 mb-4">
+    <div class="topbar">
+      <h1 class="brand"><a href="/"><img src="/favicon.svg" alt=""> UNIMORE <span class="accent">Calendar</span></a></h1>
+      <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Cambia tema">🌙</button>
+    </div>
+    <p class="subtitle">Porta l&#39;orario delle lezioni UNIMORE su Google Calendar, Apple Calendar o Outlook. Scegli il tuo corso e solo gli insegnamenti che segui: il calendario si aggiorna da solo.</p>
+    <span class="pill" id="aa-label"></span>
+  </header>
+  <main id="box">
+    <form id="form_calendar" action="/corso" method="get">
+      <div class="field">
+        <label class="field-label" for="areas"><span class="field-num">1</span>Scuola</label>
+        <select id="areas" class="form-select" name="s">
+          <option value="">Seleziona la scuola</option>
         </select>
       </div>
-      <div id="courses-container" class="mb-3">
-        <select id="courses" class="form-select" name="c" aria-label="Corso">
-        </select>
-        <div class="spinner-border loading-image-invisible" id="courses-loading" role="status"></div>
+      <div class="field">
+        <label class="field-label" for="courses"><span class="field-num">2</span>Corso di studio</label>
+        <div id="courses-container">
+          <select id="courses" class="form-select" name="c"></select>
+          <div class="spinner-border loading-image-invisible" id="courses-loading" role="status"></div>
+        </div>
       </div>
-      <div class="mb-3">
-        <select id="years" class="form-select" name="y" aria-label="Anno">
-        </select>
+      <div class="field">
+        <label class="field-label" for="years"><span class="field-num">3</span>Anno</label>
+        <select id="years" class="form-select" name="y"></select>
       </div>
-      <div id="curricula-container" class="mb-3">
-        <select id="curricula" class="form-select" name="a" aria-label="Curriculum">
-        </select>
-        <div class="spinner-border loading-image-invisible" id="curricula-loading" role="status"></div>
+      <div class="field">
+        <label class="field-label" for="curricula"><span class="field-num">4</span>Curriculum</label>
+        <div id="curricula-container">
+          <select id="curricula" class="form-select" name="a"></select>
+          <div class="spinner-border loading-image-invisible" id="curricula-loading" role="status"></div>
+        </div>
       </div>
-      <div>
-        <input type="submit" id="submit-form-button" class="btn btn-primary d-inline" value="Avanti" disabled>
-      </div>
+      <input type="submit" id="submit-form-button" class="btn btn-primary btn-wide" value="Avanti →" disabled>
       <div id="low-connection">Connessione debole...</div>
-      <div id="not-available" class="mt-2">Siamo spiacenti, ma UNIMORE non ha reso disponibile l'orario per questo percorso sul portale pubblico.</div>
+      <div id="not-available">Siamo spiacenti, ma UNIMORE non ha reso disponibile l&#39;orario per questo percorso sul portale pubblico.</div>
     </form>
-    <p class="text-muted small mt-2 mb-0" id="aa-label"></p>
-  </div>
+  </main>
+
+  <section class="how" aria-label="Come funziona">
+    <div class="how-item"><span class="how-icon">🎓</span><strong>Scegli il corso</strong>Scuola, corso, anno e curriculum.</div>
+    <div class="how-item"><span class="how-icon">✅</span><strong>Filtra le lezioni</strong>Tieni solo gli insegnamenti che segui.</div>
+    <div class="how-item"><span class="how-icon">🔄</span><strong>Sempre aggiornato</strong>Le modifiche all&#39;orario arrivano da sole.</div>
+  </section>
 </div>
-  <!-- FOOTER -->
-  <figure class="text-center mt-5 px-3">
-    <figcaption class="blockquote-footer">
-      Sito indipendente, <strong>non affiliato né approvato dall&#39;Università degli Studi di Modena e Reggio Emilia (UNIMORE)</strong>.<br>
-      Gli orari provengono dal portale pubblico <a href="https://www.aule.unimore.it/PortaleStudentiUnimore/" target="_blank" rel="noopener">aule.unimore.it</a>: in caso di dubbi fa fede il sito ufficiale.<br>
-      Basato su <a href="https://github.com/FrancescoBonzi/UniboCalendar" target="_blank" rel="noopener">UniboCalendar</a> · Licenza AGPL-3.0 · <a href="https://github.com/" id="source-link" target="_blank" rel="noopener">Codice sorgente</a>
-    </figcaption>
-  </figure>
+
+<footer class="footer-note text-center">
+  <p class="blockquote-footer mb-0">
+    Sito indipendente, <strong>non affiliato né approvato dall&#39;Università degli Studi di Modena e Reggio Emilia (UNIMORE)</strong>.<br>
+    Gli orari provengono dal portale pubblico <a href="https://www.aule.unimore.it/PortaleStudentiUnimore/" target="_blank" rel="noopener">aule.unimore.it</a>: in caso di dubbi fa fede il sito ufficiale.<br>
+    Basato su <a href="https://github.com/FrancescoBonzi/UniboCalendar" target="_blank" rel="noopener">UniboCalendar</a> · Licenza AGPL-3.0 · <a href="https://github.com/" id="source-link" target="_blank" rel="noopener">Codice sorgente</a>
+  </p>
+</footer>
 </body>
 
 </html>

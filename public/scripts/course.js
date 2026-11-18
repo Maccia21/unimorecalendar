@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams(window.location.search);
     const errorBox = document.getElementById("course-error");
     const content = document.getElementById("course-content");
-    const tbody = document.getElementById("lectures");
+    const tbody = document.getElementById("lectures"); // list container
     const toggle = document.getElementById("select_or_deselect_all");
     let select = false;
 
@@ -15,31 +15,44 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!course || !curriculum) return fail();
 
         document.getElementById("course-title").textContent =
-            course.label + " (" + course.tipo + ") - " + curriculum.year + "° anno - " + curriculum.label;
+            "🎓 " + course.label + " · " + curriculum.year + "° anno · " + curriculum.label;
+
+        const counter = document.getElementById("counter");
+        function updateCounter() {
+            const boxes = Array.from(document.getElementsByName("lectures"));
+            const n = boxes.filter(function (b) { return b.checked; }).length;
+            counter.textContent = n + " di " + boxes.length + " insegnamenti selezionati";
+        }
 
         curriculum.lezioni.forEach(function (lezione, i) {
-            const tr = document.createElement("tr");
-            const th1 = document.createElement("th");
-            const th2 = document.createElement("th");
+            const row = document.createElement("label");
+            row.className = "lecture";
+            row.htmlFor = "lecture-" + i;
             const input = document.createElement("input");
             input.type = "checkbox";
-            input.className = "checkbox";
             input.name = "lectures";
             input.value = lezione.code;
             input.id = "lecture-" + i;
             input.checked = true;
-            const label = document.createElement("label");
-            label.htmlFor = input.id;
-            label.textContent = lezione.label + (lezione.docente ? " - " + lezione.docente : "");
-            th1.appendChild(input);
-            th2.appendChild(label);
-            tr.append(th1, th2);
-            tbody.appendChild(tr);
+            input.addEventListener("change", updateCounter);
+            const text = document.createElement("span");
+            text.className = "lecture-name";
+            text.textContent = lezione.label;
+            if (lezione.docente) {
+                const teacher = document.createElement("span");
+                teacher.className = "lecture-teacher";
+                teacher.textContent = lezione.docente;
+                text.appendChild(teacher);
+            }
+            row.append(input, text);
+            tbody.appendChild(row);
         });
+        updateCounter();
         content.classList.remove("d-none");
 
         toggle.addEventListener("click", function () {
             document.getElementsByName("lectures").forEach(function (l) { l.checked = select; });
+            updateCounter();
             select = !select;
             toggle.textContent = select ? "Seleziona tutti" : "Deseleziona tutti";
         });

@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function fillCourses() {
-        reset(courses, "--- Seleziona Corso ---");
+        reset(courses, "Seleziona il corso");
         reset(years);
         reset(curricula);
         catalog.corsi
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function fillYears() {
-        reset(years, "--- Seleziona Anno ---");
+        reset(years, "Seleziona l'anno");
         reset(curricula);
         const course = findCourse(catalog, courses.value);
         if (!course) return;
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function fillCurricula() {
-        reset(curricula, "--- Seleziona Curriculum ---");
+        reset(curricula, "Seleziona il curriculum");
         const course = findCourse(catalog, courses.value);
         if (!course || !years.value) return;
         const options = course.anni.filter(function (a) { return String(a.year) === years.value; });
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
         lowConnection.style.display = "none";
         data.scuole.forEach(function (s) { addOption(areas, s.id, s.label); });
         document.getElementById("aa-label").textContent =
-            "Anno accademico " + data.aa + "/" + (data.aa + 1);
+            "📅 Anno accademico " + data.aa + "/" + (data.aa + 1);
     }).catch(function () {
         clearTimeout(slowTimer);
         lowConnection.textContent = "Impossibile caricare l'elenco dei corsi, ricarica la pagina.";
