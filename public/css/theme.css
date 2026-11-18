@@ -2,17 +2,17 @@
 
 :root {
     color-scheme: light;
-    --bg: #f4f5fb;
-    --bg-glow-1: rgba(99, 102, 241, 0.16);
-    --bg-glow-2: rgba(236, 72, 153, 0.10);
+    --bg: #f7f4f4;
+    --bg-glow-1: rgba(147, 24, 35, 0.12);
+    --bg-glow-2: rgba(88, 88, 87, 0.08);
     --surface: #ffffff;
-    --surface-2: #f7f7fc;
-    --border: #e4e6f0;
-    --text: #171a2b;
-    --muted: #61657a;
-    --accent: #4f46e5;
-    --accent-2: #9333ea;
-    --accent-soft: rgba(79, 70, 229, 0.10);
+    --surface-2: #faf7f7;
+    --border: #eadfe0;
+    --text: #1f1a1b;
+    --muted: #585857;
+    --accent: #931823;
+    --accent-2: #c02a37;
+    --accent-soft: rgba(147, 24, 35, 0.08);
     --danger: #dc2626;
     --shadow: 0 10px 30px rgba(23, 26, 43, 0.08), 0 2px 6px rgba(23, 26, 43, 0.04);
     --radius: 18px;
@@ -21,17 +21,17 @@
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
         color-scheme: dark;
-        --bg: #0d0f1a;
-        --bg-glow-1: rgba(99, 102, 241, 0.22);
-        --bg-glow-2: rgba(236, 72, 153, 0.12);
-        --surface: #161928;
-        --surface-2: #1d2133;
-        --border: #2a2f45;
-        --text: #eceef7;
-        --muted: #9aa0b8;
-        --accent: #818cf8;
-        --accent-2: #c084fc;
-        --accent-soft: rgba(129, 140, 248, 0.14);
+        --bg: #120c0d;
+        --bg-glow-1: rgba(147, 24, 35, 0.35);
+        --bg-glow-2: rgba(192, 42, 55, 0.10);
+        --surface: #1d1415;
+        --surface-2: #261a1c;
+        --border: #3a2729;
+        --text: #f5eeee;
+        --muted: #b7a9aa;
+        --accent: #f07a84;
+        --accent-2: #ff9ea6;
+        --accent-soft: rgba(240, 122, 132, 0.14);
         --danger: #f87171;
         --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
     }
@@ -39,17 +39,17 @@
 
 :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #0d0f1a;
-    --bg-glow-1: rgba(99, 102, 241, 0.22);
-    --bg-glow-2: rgba(236, 72, 153, 0.12);
-    --surface: #161928;
-    --surface-2: #1d2133;
-    --border: #2a2f45;
-    --text: #eceef7;
-    --muted: #9aa0b8;
-    --accent: #818cf8;
-    --accent-2: #c084fc;
-    --accent-soft: rgba(129, 140, 248, 0.14);
+    --bg: #120c0d;
+    --bg-glow-1: rgba(147, 24, 35, 0.35);
+    --bg-glow-2: rgba(192, 42, 55, 0.10);
+    --surface: #1d1415;
+    --surface-2: #261a1c;
+    --border: #3a2729;
+    --text: #f5eeee;
+    --muted: #b7a9aa;
+    --accent: #f07a84;
+    --accent-2: #ff9ea6;
+    --accent-soft: rgba(240, 122, 132, 0.14);
     --danger: #f87171;
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
 }
@@ -98,7 +98,7 @@ html, body {
     height: 48px !important;
     margin: 0 !important;
     border-radius: 12px;
-    box-shadow: 0 6px 16px rgba(79, 70, 229, 0.25);
+    box-shadow: 0 6px 16px rgba(147, 24, 35, 0.25);
 }
 
 .brand .accent {
@@ -209,15 +209,16 @@ html, body {
 
 .btn-primary,
 input[type="submit"].btn-primary {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    background: linear-gradient(90deg, #931823, #c02a37);
     border: 0;
-    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.28);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(147, 24, 35, 0.28);
     transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
 }
 
 .btn-primary:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 10px 24px rgba(79, 70, 229, 0.35);
+    box-shadow: 0 10px 24px rgba(147, 24, 35, 0.35);
 }
 
 .btn-primary:disabled {
@@ -391,7 +392,7 @@ input[type="submit"].btn-primary {
 }
 
 .step-number {
-    background: linear-gradient(135deg, var(--accent), var(--accent-2)) !important;
+    background: linear-gradient(135deg, #931823, #c02a37) !important;
 }
 
 .raw-link-card {

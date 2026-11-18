@@ -4,7 +4,7 @@
 //   public/sitemap.xml             -> home + course pages
 // Run after build-catalog.mjs:  node scripts/build-pages.mjs
 
-import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
+import { readFile, writeFile, mkdir, readdir, unlink } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -75,7 +75,7 @@ function head({ title, description, path, extra = "" }) {
   <meta property="og:image" content="${SITE}/og-image.png">
   <meta property="og:locale" content="it_IT">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#4f46e5">
+  <meta name="theme-color" content="#931823">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="/calendar.png" type="image/png">
   <link rel="apple-touch-icon" href="/calendar.png">
@@ -117,29 +117,55 @@ function jsonLd(data) {
     return `  <script type="application/ld+json">${JSON.stringify(data).replace(/</g, "\\u003c")}</script>\n`;
 }
 
+const TYPE_HINT = {
+    "Laurea Triennale": "corso di laurea triennale",
+    "Laurea Magistrale": "corso di laurea magistrale",
+    "Laurea magistrale": "corso di laurea magistrale",
+    "Laurea Magistrale Ciclo Unico": "corso di laurea magistrale a ciclo unico",
+};
+
+function teachersOf(course) {
+    const names = new Set();
+    for (const a of course.anni) {
+        for (const l of a.lezioni) {
+            for (const n of l.docente.split(",")) if (n.trim()) names.add(n.trim());
+        }
+    }
+    return [...names].sort((x, y) => x.localeCompare(y, "it"));
+}
+
+function yearSection(course, a) {
+    const link = `/corso?c=${encodeURIComponent(course.code)}&a=${encodeURIComponent(a.value)}`;
+    const items = a.lezioni
+        .map((l) => `        <li><strong>${escapeHtml(l.label)}</strong>${l.docente ? ` · ${escapeHtml(l.docente)}` : ""}</li>`)
+        .join("\n");
+    const action = a.disponibile === false
+        ? `<p class="counter mb-0">Orario non ancora pubblicato da UNIMORE per questo percorso.</p>`
+        : `<a class="btn btn-primary" href="${link}">Aggiungi il ${a.year}° anno al calendario →</a>`;
+    return `    <section class="mt-4">
+      <h2 class="h5 fw-bold">${a.year}° anno · ${escapeHtml(a.label)}</h2>
+      ${a.lezioni.length ? `<ul>\n${items}\n      </ul>` : `<p class="counter">Elenco insegnamenti non disponibile.</p>`}
+      ${action}
+    </section>`;
+}
+
 function coursePage(course, depName, aa, foot) {
     const name = prettyCourseName(course.label);
     const path = `/corsi/${course.slug}`;
+    const kind = TYPE_HINT[course.tipo] || course.tipo.toLowerCase();
+    const anni = course.anni.slice().sort((a, b) => a.year - b.year || a.label.localeCompare(b.label, "it"));
+    const years = [...new Set(anni.map((a) => a.year))];
+    const curricula = [...new Set(anni.map((a) => a.label))];
+    const teachings = new Set(anni.flatMap((a) => a.lezioni.map((l) => l.label)));
+    const teachers = teachersOf(course);
+    const sample = [...teachings].slice(0, 3).join(", ");
     const title = `Orario lezioni ${name} UNIMORE ${aa}/${aa + 1} su Google Calendar`;
-    const description = `Orario delle lezioni di ${name} (${course.tipo}, UNIMORE) su Google Calendar, Apple Calendar e Outlook. Scegli anno e insegnamenti: si aggiorna da solo. Gratis.`;
-    const years = [...new Set(course.anni.map((a) => a.year))].sort((a, b) => a - b);
-    const available = course.anni.some((a) => a.disponibile !== false);
+    const description = `Orario ${name} (${course.tipo}) UNIMORE ${aa}/${aa + 1}: ${teachings.size} insegnamenti${sample ? " tra cui " + sample : ""}. Aggiungilo a Google o Apple Calendar.`.slice(0, 300);
+    const available = anni.some((a) => a.disponibile !== false);
 
-    const rows = course.anni
-        .slice()
-        .sort((a, b) => a.year - b.year || a.label.localeCompare(b.label, "it"))
-        .map((a) => {
-            const lezioni = a.lezioni.map((l) => escapeHtml(l.label)).join(", ");
-            const link = `/corso?c=${encodeURIComponent(course.code)}&a=${encodeURIComponent(a.value)}`;
-            const action = a.disponibile === false
-                ? `<span class="counter">Orario non pubblicato da UNIMORE</span>`
-                : `<a class="btn btn-primary" href="${link}">Crea il calendario →</a>`;
-            return `      <div class="lecture" style="cursor:default;flex-wrap:wrap;justify-content:space-between">
-        <span class="lecture-name">${a.year}° anno · ${escapeHtml(a.label)}<span class="lecture-teacher">${a.lezioni.length} insegnamenti${lezioni ? ": " + lezioni : ""}</span></span>
-        ${action}
-      </div>`;
-        })
-        .join("\n");
+    const intro = `<p><strong>${escapeHtml(name)}</strong> è un ${escapeHtml(kind)} del Dipartimento di ${escapeHtml(depName)} dell'Università di Modena e Reggio Emilia.
+    Per l'a.a. ${aa}/${aa + 1} il portale orari UNIMORE elenca ${teachings.size} insegnamenti su ${years.length === 1 ? "1 anno" : `${years.length} anni`}${curricula.length > 1 ? ` e ${curricula.length} curricula (${curricula.map(escapeHtml).join(", ")})` : ""}${teachers.length ? `, tenuti da ${teachers.length} docenti` : ""}.
+    Scegli il tuo anno qui sotto: potrai togliere gli insegnamenti che non segui e ricevere l'orario aggiornato su Google Calendar, Apple Calendar o Outlook.</p>`;
 
     const ld = jsonLd(breadcrumbLd([
         { name: "UNIMORE Calendar", path: "/" },
@@ -148,16 +174,13 @@ function coursePage(course, depName, aa, foot) {
     ]));
 
     return head({ title, description, path, extra: ld }) + `    <h1 class="h2 fw-bold mt-3">Orario lezioni ${escapeHtml(name)}</h1>
-    <p class="subtitle">${escapeHtml(course.tipo)} · Dipartimento di ${escapeHtml(depName)} · Università di Modena e Reggio Emilia · a.a. ${aa}/${aa + 1}</p>
+    <p class="subtitle">${escapeHtml(course.tipo)} · ${escapeHtml(depName)} · UNIMORE · a.a. ${aa}/${aa + 1}</p>
   </header>
 
   <main id="box">
-    <p>Aggiungi l'orario delle lezioni di <strong>${escapeHtml(name)}</strong> a Google Calendar, Apple Calendar o Outlook.
-    Scegli l'anno (${years.join(", ")}) e tieni solo gli insegnamenti che segui: quando UNIMORE cambia un'aula o un orario, il tuo calendario si aggiorna da solo.</p>
+    ${intro}
     ${available ? "" : `<p id="not-available" style="display:block">UNIMORE al momento non pubblica l'orario di questo corso sul portale pubblico.</p>`}
-    <div class="lecture-list mt-3">
-${rows}
-    </div>
+${anni.map((a) => yearSection(course, a)).join("\n")}
   </main>
   <p class="mt-3"><a href="/corsi/">← Tutti i corsi UNIMORE</a></p>
 </div>
@@ -204,12 +227,18 @@ async function main() {
     const corsi = assignSlugs(catalog.corsi);
     const depNames = Object.fromEntries(catalog.dipartimenti.map((d) => [d.id, d.label]));
 
-    await rm(join(ROOT, "corsi"), { recursive: true, force: true });
-    await mkdir(join(ROOT, "corsi"), { recursive: true });
+    // Overwrite in place and remove only stale files: deleting the whole folder
+    // makes synced folders (iCloud) create "name 2.html" conflict copies.
+    const dir = join(ROOT, "corsi");
+    await mkdir(dir, { recursive: true });
+    const wanted = new Set(["index.html", ...corsi.map((c) => `${c.slug}.html`)]);
     for (const c of corsi) {
-        await writeFile(join(ROOT, "corsi", `${c.slug}.html`), coursePage(c, depNames[c.dip] || c.dip, catalog.aa, foot));
+        await writeFile(join(dir, `${c.slug}.html`), coursePage(c, depNames[c.dip] || c.dip, catalog.aa, foot));
     }
-    await writeFile(join(ROOT, "corsi", "index.html"), indexPage(corsi, catalog.dipartimenti, catalog.aa, foot));
+    await writeFile(join(dir, "index.html"), indexPage(corsi, catalog.dipartimenti, catalog.aa, foot));
+    for (const name of await readdir(dir)) {
+        if (!wanted.has(name)) await unlink(join(dir, name));
+    }
     await writeFile(join(ROOT, "sitemap.xml"), sitemap(corsi, new Date().toISOString().slice(0, 10)));
     console.log(`OK: ${corsi.length} pagine corso + indice + sitemap`);
 }
