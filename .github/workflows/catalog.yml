@@ -16,11 +16,12 @@ jobs:
           node-version: 22
       - run: npm test
       - run: node scripts/build-catalog.mjs
+      - run: node scripts/build-pages.mjs
       - name: Commit se cambiato
         run: |
-          if git diff --quiet -- public/data/catalog.json; then echo "Nessuna modifica"; exit 0; fi
+          if git diff --quiet -- public/data public/corsi public/sitemap.xml && [ -z "$(git ls-files --others --exclude-standard public/corsi)" ]; then echo "Nessuna modifica"; exit 0; fi
           git config user.name "catalog-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add public/data/catalog.json
+          git add public/data public/corsi public/sitemap.xml
           git commit -m "chore: aggiorna catalogo corsi"
           git push
