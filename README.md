@@ -9,8 +9,8 @@ Stesso funzionamento di [UniboCalendar](https://github.com/FrancescoBonzi/UniboC
 
 | Parte | Dove | Cosa fa |
 |---|---|---|
-| `public/` | file statici | Pagine `index.html` (Scuola → Corso → Anno → Curriculum), `corso.html` (scelta insegnamenti), `link.html` (Google/Apple) |
-| `public/data/catalog.json` | file statico | Scuole, corsi, anni, curricula, insegnamenti. Nessuna chiamata server per navigare il sito |
+| `public/` | file statici | Pagine `index.html` (Dipartimento → Corso → Anno → Curriculum), `corso.html` (scelta insegnamenti), `link.html` (Google/Apple) |
+| `public/data/catalog.json` | file statico | Dipartimenti, corsi, anni, curricula, insegnamenti. Nessuna chiamata server per navigare il sito |
 | `functions/ics.js` | Pages Function | `GET /ics?aa=…&c=…&a=…&l=…&alert=…` legge le lezioni dal portale UNIMORE e restituisce il `.ics` |
 | `scripts/build-catalog.mjs` | solo in build / GitHub Actions | Rigenera `catalog.json` |
 

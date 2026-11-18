@@ -1,4 +1,4 @@
-// Generates public/data/catalog.json (schools, courses, years, curricula, teachings).
+// Generates public/data/catalog.json (departments, courses, years, curricula, teachings).
 // Runs at build/deploy time only: the live site never calls this.
 //   node scripts/build-catalog.mjs            -> current academic year
 //   node scripts/build-catalog.mjs 2026       -> a specific year
@@ -58,7 +58,7 @@ async function main() {
     await writeFile(OUT_FILE, JSON.stringify(catalog));
     const anni = catalog.corsi.reduce((n, c) => n + c.anni.length, 0);
     const pubblicati = catalog.corsi.reduce((n, c) => n + c.anni.filter((a) => a.disponibile !== false).length, 0);
-    console.log(`OK: ${catalog.scuole.length} scuole, ${catalog.corsi.length} corsi, ${pubblicati}/${anni} percorsi con orario -> ${OUT_FILE}`);
+    console.log(`OK: ${catalog.dipartimenti.length} dipartimenti, ${catalog.corsi.length} corsi, ${pubblicati}/${anni} percorsi con orario -> ${OUT_FILE}`);
 }
 
 main().catch((err) => {

@@ -1,4 +1,4 @@
-// Home: Scuola -> Corso -> Anno -> Curriculum, same flow as UniboCalendar.
+// Home: Dipartimento -> Corso -> Anno -> Curriculum, same flow as UniboCalendar.
 const LOW_CONNECTION_MS = 5000;
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
         reset(years);
         reset(curricula);
         catalog.corsi
-            .filter(function (c) { return c.scuola === areas.value; })
+            .filter(function (c) { return c.dip === areas.value; })
             .sort(function (a, b) {
                 return a.tipo === b.tipo ? a.label.localeCompare(b.label, "it") : a.tipo.localeCompare(b.tipo, "it");
             })
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
         catalog = data;
         clearTimeout(slowTimer);
         lowConnection.style.display = "none";
-        data.scuole.forEach(function (s) { addOption(areas, s.id, s.label); });
+        data.dipartimenti.forEach(function (s) { addOption(areas, s.id, s.label); });
         document.getElementById("aa-label").textContent =
             "📅 Anno accademico " + data.aa + "/" + (data.aa + 1);
     }).catch(function () {

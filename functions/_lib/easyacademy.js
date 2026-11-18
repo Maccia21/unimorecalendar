@@ -6,6 +6,27 @@ export const TIME_ZONE = "Europe/Rome";
 
 const ACADEMIC_YEAR_START_MONTH = 8; // September (0-based)
 
+// The portal exposes only department codes (facolta_code): readable names.
+export const DEPARTMENT_NAMES = {
+    ingegneria: "Ingegneria \"Enzo Ferrari\"",
+    economia: "Economia \"Marco Biagi\"",
+    sce: "Comunicazione ed Economia",
+    lettere: "Studi Linguistici e Culturali",
+    "DSLC - Lettorati": "Studi Linguistici e Culturali - Lettorati",
+    medicina: "Area Medica (Medicina e Chirurgia)",
+    scienze_vita: "Scienze della Vita",
+    agr: "Scienze della Vita - Agraria e Alimenti",
+    dscg: "Scienze Chimiche e Geologiche",
+    ingre: "Scienze e Metodi dell'Ingegneria",
+    educazione: "Educazione e Scienze Umane",
+    smfn: "Scienze Fisiche, Informatiche e Matematiche",
+    giurisprudenza: "Giurisprudenza",
+};
+
+export function departmentName(code) {
+    return DEPARTMENT_NAMES[code] || String(code);
+}
+
 /** Academic year that is running on `now` (e.g. Nov 2026 -> 2026, meaning 2026/2027). */
 export function currentAcademicYear(now = new Date()) {
     const year = now.getUTCFullYear();
@@ -35,19 +56,19 @@ export function curriculumLabel(label) {
 
 /** Turns the raw combo.php payload into the compact catalog served as static JSON. */
 export function buildCatalog(comboSource, academicYear) {
-    const scuole = extractComboVar(comboSource, "elenco_scuole");
     const corsi = extractComboVar(comboSource, "elenco_corsi");
+    const depCodes = [...new Set(corsi.map((c) => c.facolta_code).filter(Boolean))];
     return {
         aa: academicYear,
-        scuole: scuole
-            .map((s) => ({ id: s.valore, label: s.label }))
+        dipartimenti: depCodes
+            .map((code) => ({ id: code, label: departmentName(code) }))
             .sort((a, b) => a.label.localeCompare(b.label, "it")),
         corsi: corsi
             .map((c) => ({
                 code: c.valore,
                 label: c.label.trim(),
                 tipo: (c.tipo || "").trim(),
-                scuola: c.scuola,
+                dip: c.facolta_code,
                 anni: (c.elenco_anni || [])
                     .map((a) => ({
                         value: a.valore,

@@ -5,7 +5,7 @@ import {
 } from "../functions/_lib/easyacademy.js";
 
 const COMBO = `var elenco_scuole = [{"label":"Tecnologia","valore":"Tecnologia","id":"5"}];
-var elenco_corsi = [{"elenco_anni":[{"label":"1 - Comune","valore":"PDS0-2026|1","elenco_insegnamenti":[{"label":"Analisi ","valore":"EC-1","docente":"M. Rossi"}],"elenco_canali":[]},{"label":"senza anno","valore":"X","elenco_insegnamenti":[]}],"label":"Economia","tipo":"Laurea magistrale","valore":"50-367","scuola":"Tecnologia"}];
+var elenco_corsi = [{"elenco_anni":[{"label":"1 - Comune","valore":"PDS0-2026|1","elenco_insegnamenti":[{"label":"Analisi ","valore":"EC-1","docente":"M. Rossi"}],"elenco_canali":[]},{"label":"senza anno","valore":"X","elenco_insegnamenti":[]}],"label":"Economia","tipo":"Laurea magistrale","valore":"50-367","scuola":"Tecnologia","facolta_code":"ingegneria"}];
 var elenco_cdl = [];`;
 
 test("returns the academic year that started in September", () => {
@@ -28,7 +28,8 @@ test("throws a clear error when combo.php misses a variable", () => {
 test("builds a compact catalog and drops entries without a year", () => {
     const catalog = buildCatalog(COMBO, 2026);
     assert.equal(catalog.aa, 2026);
-    assert.deepEqual(catalog.scuole, [{ id: "Tecnologia", label: "Tecnologia" }]);
+    assert.deepEqual(catalog.dipartimenti, [{ id: "ingegneria", label: 'Ingegneria "Enzo Ferrari"' }]);
+    assert.equal(catalog.corsi[0].dip, "ingegneria");
     assert.equal(catalog.corsi.length, 1);
     assert.deepEqual(catalog.corsi[0].anni, [{
         value: "PDS0-2026|1", year: 1, label: "Comune",
@@ -63,4 +64,9 @@ test("marks cancelled lessons", () => {
     const [event] = cellsToEvents([{ ...LESSON, Annullato: "1" }], []);
     assert.equal(event.cancelled, true);
     assert.match(event.title, /^\[ANNULLATA\]/);
+});
+
+test("falls back to the raw code for unknown departments", async () => {
+    const { departmentName } = await import("../functions/_lib/easyacademy.js");
+    assert.equal(departmentName("nuovo_dip"), "nuovo_dip");
 });
