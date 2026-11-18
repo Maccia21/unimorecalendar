@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="it">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Aggiungi l'orario delle lezioni UNIMORE al tuo calendario (Google, Apple, Outlook), filtrando solo i corsi che segui.">
+  <title>link - UNIMORE Calendar</title>
+
+  <!-- Bootstrap -->
+  <link href="/css/bootstrap.css" rel="stylesheet">
+  <link href="/css/template.css" rel="stylesheet">
+  <link rel="shortcut icon" href="/calendar.png" type="image/x-icon" />
+
+  <!-- Custom styles -->
+  <link href="/css/link.css" rel="stylesheet">
+  <script src="/scripts/link.js" defer></script>
+</head>
+
+<body class="">
+  <div class="container" id="main-container">
+<div class="container" id="main-container">
+        <div class="mt-5">
+            <h1><a href="/"><img src="/calendar.png" alt="UNIMORE Calendar" style="width: 40px; height: 40px; margin-right: 10px; margin-top: 3px; vertical-align: top;">UNIMORE Calendar</a></h1>
+            <h6>Clicca sul calendario che vuoi utilizzare e in un attimo hai finito</h6>
+        </div>
+        <div id="link-error" class="d-none mt-3"><h5 style="color: #dc3545;">Errore! L'indirizzo non è valido...</h5><a href="/">Torna alla home</a></div>
+        <section class="d-flex flex-column flex-md-row justify-content-around mt-4" id="box">
+            <!-- Google Calendar Box -->
+            <div class="cal-guide-box mb-4 mb-md-0">
+                <div class="cal-header">
+                    <img src="/media/google.png" alt="Google Calendar" class="cal-icon">
+                    <h3>Aggiungi a Google Calendar</h3>
+                </div>
+                <div class="cal-steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <p>Clicca il pulsante qui sotto per aprire Google Calendar (Desktop)</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <p>Incolla il link in  <kbd>URL del calendario</kbd></p>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <p>Clicca <kbd>Aggiungi calendario</kbd></p>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <p>Ora lo troverai in <kbd>Altri calendari</kbd> dove puoi cambiare il nome</p>
+                    </div>
+                    <div class="step">
+                         <span class="step-number">⚠️</span>
+                         <p>Potresti dover attendere qualche minuto prima che appaiano gli eventi</p>
+                    </div>
+                </div>
+                <a href="https://calendar.google.com/calendar/u/0/r/settings/addbyurl" id="google-button" class="cal-button google-button">
+                   <img src="/media/google.png" alt="Google" class="button-icon"> Copia URL e Apri Google Calendar
+                </a>
+            </div>
+
+            <!-- Apple Calendar Box -->
+            <div class="cal-guide-box">
+                <div class="cal-header">
+                    <img src="/media/apple.png" alt="Apple Calendar" class="cal-icon">
+                    <h3>Aggiungi ad Apple Calendar</h3>
+                </div>
+                <div class="cal-steps">
+                    <div class="step">
+                        <span class="step-number">1</span>
+                        <p>Clicca il pulsante qui sotto per aprire l'app Calendario di Apple</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">2</span>
+                        <p>Clicca <kbd>Iscriviti</kbd></p>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">3</span>
+                        <p>Scegli un nome (e.g. UNIMORE Calendar) + conferma in alto a destra</p>
+                    </div>
+                    <div class="step">
+                        <span class="step-number">4</span>
+                        <p>Ora lo troverai tra i tuoi calendari <kbd>iCloud</kbd></p>
+                    </div>
+                    <div class="step">
+                         <span class="step-number">⚠️</span>
+                         <p>Potresti dover attendere qualche minuto prima che appaiano gli eventi</p>
+                    </div>
+                </div>
+                <a href="#" id="apple-button" class="cal-button apple-button">
+                   <img src="/media/apple.png" alt="Apple" class="button-icon"> Apri Apple Calendar
+                </a>
+            </div>
+
+        </section>
+        <div class="mt-4 text-center" id="raw-link-box">
+            <p class="mb-1">Altre app (Outlook, Thunderbird...): copia questo indirizzo e aggiungilo come calendario da URL</p>
+            <code id="raw-link" class="user-select-all"></code>
+        </div>
+</div>
+  <!-- FOOTER -->
+  <figure class="text-center mt-5 px-3">
+    <figcaption class="blockquote-footer">
+      Sito indipendente, <strong>non affiliato né approvato dall&#39;Università degli Studi di Modena e Reggio Emilia (UNIMORE)</strong>.<br>
+      Gli orari provengono dal portale pubblico <a href="https://www.aule.unimore.it/PortaleStudentiUnimore/" target="_blank" rel="noopener">aule.unimore.it</a>: in caso di dubbi fa fede il sito ufficiale.<br>
+      Basato su <a href="https://github.com/FrancescoBonzi/UniboCalendar" target="_blank" rel="noopener">UniboCalendar</a> · Licenza AGPL-3.0 · <a href="https://github.com/" id="source-link" target="_blank" rel="noopener">Codice sorgente</a>
+    </figcaption>
+  </figure>
+</body>
+
+</html>

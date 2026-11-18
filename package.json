@@ -1,32 +1,13 @@
 {
-  "name": "unibocalendar",
+  "name": "unimorecalendar",
   "version": "1.0.0",
-  "description": "Servizio che consente a tutti gli studenti Unibo di aggiungere l'orario delle loro lezioni, filtrando solo quelle di interesse, al proprio calendario. Dopo aver aggiunto il link del proprio orario e l'anno di corso, il servizio permette di selezionare solo i corsi da frequentare e genera un semplice link con il quale eseguire una \"Iscrizione a Calendario\" nel proprio calendario personale.",
-  "main": "index.js",
+  "description": "Aggiungi l'orario delle lezioni UNIMORE al tuo calendario (Google, Apple, Outlook). Fork di UniboCalendar per Cloudflare Pages.",
+  "type": "module",
+  "private": true,
   "scripts": {
-    "start": "cd src; node index.js",
-    "build": "docker build -t unibocalendar:latest ."
+    "catalog": "node scripts/build-catalog.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "dev": "npx wrangler@4 pages dev public"
   },
-  "dependencies": {
-    "base32.js": "^0.1.0",
-    "cheerio": "^1.0.0-rc.10",
-    "csv-parser": "^2.3.5",
-    "dotenv": "^17.2.3",
-    "express": "^4.17.1",
-    "express-handlebars": "^6.0.0",
-    "node-fetch": "^3.0.0",
-    "randombytes": "^2.1.0",
-    "sqlite3": "^5.1.6"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/FrancescoBonzi/UniboCalendar.git"
-  },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/FrancescoBonzi/UniboCalendar/issues"
-  },
-  "homepage": "https://github.com/FrancescoBonzi/UniboCalendar#readme",
-  "type": "module"
+  "license": "AGPL-3.0-or-later"
 }

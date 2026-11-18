@@ -1,10 +1,6 @@
 node_modules
-src/logs/*
-src/opendata/*
-data
-db
-!src/opendata/.gitkeep
-!src/logs/.gitkeep
-.vscode
-fix_db/
-tmp.html
+.wrangler
+.dev.vars
+._*
+.DS_Store
+.claude
