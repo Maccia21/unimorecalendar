@@ -3,6 +3,8 @@
 Aggiungi l'orario delle lezioni UNIMORE al tuo calendario (Google, Apple, Outlook), scegliendo solo gli insegnamenti che segui.
 Stesso funzionamento di [UniboCalendar](https://github.com/FrancescoBonzi/UniboCalendar), da cui deriva (licenza AGPL-3.0), adattato a **Cloudflare Pages (piano Free)**.
 
+> 🌐 **Online:** https://unimorecalendar.pages.dev
+>
 > Sito indipendente, non affiliato a UNIMORE. Gli orari vengono letti dal portale pubblico https://www.aule.unimore.it/PortaleStudentiUnimore/.
 
 ## Come funziona
